@@ -1,0 +1,17 @@
+Part I: The Schema.
+2. Is this database in Normal Form?
+	If so, which one is it in? 1NF, 2NF, 3NF?
+	If not, what is preventing it from being normalized? Can it be normalized?
+
+Answer: This database is in Normal Form:
+	
+	1)The "city" table is 1NF. As per the rule of first normal form, 
+	  an attribute (column) of a table cannot hold multiple values. 
+	  It should hold only atomic values.
+	2) The "country" table and the "countrylanguage" table are 3NF. A table design is said to be in 3NF if both the following conditions hold:
+		Table must be in 2NF
+		Transitive functional dependency of non-prime attribute on any super key should be removed.
+	   An attribute that is not part of any candidate key is known as non-prime attribute.
+	   A table is in 3NF if it is in 2NF and for each functional dependency X-> Y at least one of the following conditions hold:
+		X is a super key of table (EX: {code, capital, name, continent. region,...})
+		Y is a prime attribute of table (EX: {countrycode})
