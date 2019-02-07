@@ -1,0 +1,162 @@
+
+Database Systems.   
+Assignment 3
+
+Setup and data loading:
+
+    Look at the data that follows, and determine the data type of each column.
+    Write CREATE TABLE statements that will create tables with appropriate datatypes
+        for each column, into which the data can be loaded and stored.
+
+    Consider how the data will be used, and how data will be added in the future.
+
+    Add any constraints to your columns that you feel will be necessary in the future.
+        For example: 
+            Are there some columns that should not be NULL ?
+            Are there some columns that should be left alone - i.e., allowed to be NULL?
+            Are there some columns that should be designated FOREIGN KEY or PRIMARY KEY?
+
+    After defining the tables, load the data into your tables.  
+        You may do this by using INSERT statements,
+        or by separating the data into three .csv files, and calling COPY.
+        Examples of both methods have been given in previous assignments and demos.
+
+    Queries with joins:
+
+        Once the data is loaded into your tables, develop queries that will answer
+        the questions that follow.
+
+    Since the data is in separate tables, your queries will need to join them
+        in order for you to select the information we want.
+
+    Hint 1:  You can load multiple data rows with just one INSERT statement.
+             (watch for single-quotes being required around strings if you
+                choose this approach).
+
+        INSERT INTO table VALUES 
+        ('john','doe',3),
+        ('jim','smith',6),
+        ('jane','west',8),
+        (...)
+        (...)
+        ;
+
+    Hint 2: While you are experimenting with how your tables should be designed, 
+                you can drop and re-create your tables each time you run your
+                table-creation script by using the following:
+
+                DROP TABLE IF EXISTS <table_name> ;
+
+                CREATE TABLE .. (
+                    <column_name> <data_type> <constraints>,
+                    <column_name> <data_type> <constraints>,
+                    ...
+                );
+
+            This will allow you test and see if your data-design ideas are working,
+                and start with a clean slate on the next run if you make changes.
+
+            NOTE:  If you have created FOREIGN KEYs, you may need to use:
+
+                DROP TABLE IF EXISTS <table_name> CASCADE;
+
+    Hint 3:  If you want to load this data from .csv (as in Assn1),
+        Each of the following data tables should live in their 
+        OWN SEPARATE .csv FILE.
+
+DATA:
+
+
+Boats:
+
+prod_id,brand,category,cost,price
+1217,Criss Craft,sporty,20000,25000.0
+1117,Bayliner,runabout,41000,45100.0
+1317,Mastercraft,ski,67000,83750.0
+1417,Boston Whaler,fishing,48000,55200.0
+1517,Carver,cabin cruser,50000,62500.0
+1617,Bayliner,runabout,33000,69300.0
+1717,Kawasaki,sporty,51000,61200.0
+1817,Kawasaki,runabout,33000,40260.0
+1917,Zodiac,inflatable,17000,22100.0
+3017,Egg Harbor,,60000,126000.0
+
+
+Buyers:
+
+cust_id,fname,lname,city,state,referrer
+1121,Jane,Doe,Boston,MA,craigslist
+1221,Fred,Smith,Hartford,CT,facebook
+1321,John,Jones,New Haven,CT,google
+1421,Alan,Weston,Stony Brook,NY,craigslist
+1521,James,Smith,Darien,CT,boatjournal
+1621,Adam,East,Fort Lee,NJ,mariner
+1721,Mary,Jones,New Haven,CT,facebook
+1821,Tonya,James,Stamford,CT,boatbuyer
+1921,Elaine,Edwards,New Rochelle,NY,boatbuyer
+2021,Alan,Easton,White Plains,NY,craigslist
+2121,James,John,Ringwood,NJ,google
+2221,Ronald,Jones,Hackensack,NJ,craigslist
+2321,Freida,Alan,Stratford,CT,boatbuyer
+2421,Thelma,James,Paterson,NJ,facebook
+2521,Louise,John,Paramus,NJ,boatbuyer
+2621,Brad,Johnson,Fort Lee,NJ,google
+2721,Thomas,Jameson,Fairfield,CT,craigslist
+2821,Robert,Newbury,Astoria,NY,boatjournal
+2921,Edward,Oldbury,Brooklyn,NY,mariner
+3021,Juan,Reyes,Brooklyn,NY,facebook
+3121,Alberto,Delacruz,New York,NY,google
+3221,Margarita,Jones,White Plains,NY,boatbuyer
+3321,Penelope,Smith,Maspeth,NY,facebook
+
+
+
+Transactions:
+
+trans_id,cust_id,prod_id,qty,price
+1124, 3121, 3017, 1, 126000.0
+1127, 1221, 1617, 1, 69300.0
+1130, 1821, 1317, 1, 83750.0
+1133, 1321, 1117, 1, 45100.0
+1136, 2521, 1717, 1, 61200.0
+1139, 2721, 1317, 1, 83750.0
+1142, 2621, 1417, 1, 55200.0
+1145, 1121, 1917, 1, 22100.0
+1148, 1821, 1817, 1, 40260.0
+1151, 2821, 3017, 1, 126000.0
+1154, 1621, 1917, 1, 22100.0
+1157, 3121, 1717, 1, 61200.0
+1160, 2321, 1517, 1, 62500.0
+1163, 3321, 1317, 1, 83750.0
+1166, 1721, 1917, 1, 22100.0
+1169, 2421, 1817, 1, 40260.0
+1172, 2921, 1417, 1, 55200.0
+1175, 2321, 3017, 1, 126000.0
+1178, 1221, 1317, 1, 83750.0
+1181, 1121, 1817, 1, 40260.0
+1184, 1321, 3017, 1, 126000.0
+1187, 1421, 1517, 1, 62500.0
+1190, 3321, 1517, 1, 62500.0
+
+
+
+
+Questions about this data:
+
+1.  We want to spend some advertising money - where should we spend it?
+        I.e., What is our best referral source of buyers?
+
+2.  Who of our customers has not bought a boat?
+
+3.  Which boats have not sold?
+
+4.  What boat did Alan Weston buy?
+
+5.  Who are our VIP customers?
+    I.e., Has anyone bought more than one boat?
+
+    Hint:  Think 'WITH' clause, subquery, or UNION.
+        It's probably adviseable to do a subquery first, to get customer id's that
+        appear in the 'transactions' table more than once. 
+        Then, after we have those, we can join them with the 'buyers' table 
+        to get the first and last names.
